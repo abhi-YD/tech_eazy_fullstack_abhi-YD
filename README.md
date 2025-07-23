@@ -106,20 +106,28 @@ Optional APIs	Axios API (route planning), Socket.IO (real-time updates)
 backend/
 
 ├── server.js
+
 ├── parcel/
+
 │   ├── parcelModel.js
 │   ├── parcelService.js
 │   └── parcelController.js
+
 ├── db/
+
 │   └── parcel.db
+
 ├── package.json
 
 
 frontend/
 
 ├── index.html
+
 ├── app.js
+
 ├── style.css
+
 ├── README.md
 
 
