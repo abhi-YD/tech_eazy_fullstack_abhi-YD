@@ -1,6 +1,7 @@
 # tech_eazy_fullstack_abhi-YD
 
 BUILDING A LOGISTIC WEB APPLICATION THAT FOCOUSES ON :-
+
 -Last-mile delivery from a central warehouse to customer
 -Involves vendors,parcels,and routes.
 -A Web portal is the main interface for managing everything.
@@ -103,14 +104,19 @@ Optional APIs	Axios API (route planning), Socket.IO (real-time updates)
 # PROJECT STRUCTURE -how to manage files 
 
 backend/
-├── main.py               # FastAPI app + routes
-├── models.py             # Parcel model (using Pydantic or SQLModel)
-├── database.py           # SQLite DB connection
-├── service.py            # Logic: create/get/update/delete
-├── parcel.db             # SQLite database
-├── README.md
+
+├── server.js
+├── parcel/
+│   ├── parcelModel.js
+│   ├── parcelService.js
+│   └── parcelController.js
+├── db/
+│   └── parcel.db
+├── package.json
+
 
 frontend/
+
 ├── index.html
 ├── app.js
 ├── style.css
