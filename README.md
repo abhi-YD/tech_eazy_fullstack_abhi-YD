@@ -8,18 +8,29 @@ BUILDING A LOGISTIC WEB APPLICATION THAT FOCOUSES ON :-
 #  WORKFLOW DIADRAM
 
 Vendor → Upload Parcel List
+
              ↓
+             
      Warehouse Receives Parcels
+     
              ↓
 Group Parcels by Area & Size
+
              ↓
+             
      Plan Delivery Routes
+     
              ↓
+             
 Assign Driver & Vehicle
+
              ↓
+             
    Track Delivery Status
 
+
 --FUNCTIONS INVOLVED--
+
 
 🎯 1. Parcel List Upload (Vendor Feature)
 
