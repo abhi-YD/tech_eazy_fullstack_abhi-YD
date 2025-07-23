@@ -1,0 +1,17 @@
+# 1.Move to Backend Directory
+  mkdir backend
+  cd backend
+
+# 2. Initialize of Node.js
+  npm init -y  //make sure node.js is already installed to check(/open cmd - run(node --version)
+  npm install express sqlite3 cors by-parser bycrypt
+
+# 3. Run server
+  node server.js
+
+Server running at http://localhost:3000
+(copy link and open in browser and check server is runing or not)
+
+# 4. For running website 
+ you can open html file with live server by right clicking at html file.
+
