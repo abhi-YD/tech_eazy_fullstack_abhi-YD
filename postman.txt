@@ -1,0 +1,56 @@
+//POST(add a vendor)
+    http://localhost:3000/vendors
+
+{
+  "name":"test vendor",
+  "email": "vendor@gmail.com",
+  "password":"test123"
+}
+//RESPONSE
+{
+  "id": "747b8697-d104-410f-bd5c-81cb1f115ea0",
+  "name": "test vendor",
+  "email": "vendor@gmail.com",
+  "password": "test123"
+}
+
+//POST (TEST VENDOR LOGIN)
+    http://localhost:3000/auth/login
+
+{
+    "email":"vendor@gmail.com",
+    "password":"test123"
+}
+
+//RESPONSE
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc0N2I4Njk3LWQxMDQtNDEwZi1iZDVjLTgxY2IxZjExNWVhMCIsImVtYWlsIjoidmVuZG9yQGdtYWlsLmNvbSIsImlhdCI6MTc1MzUyOTE2OSwiZXhwIjoxNzUzNTMyNzY5fQ.xjOBRBRMjlCpCaY0h-h44WqIf-HirZ2GJMy_D5zixbw",
+  "vendor": {
+    "id": "747b8697-d104-410f-bd5c-81cb1f115ea0",
+    "name": "test vendor",
+    "email": "vendor@gmail.com",
+    "password": "test123"
+  }
+}
+
+//POST (ADD A APARCEL)
+    http://localhost:3000/parcels
+
+{
+ "customer_name":"john doe",
+ "delivery_addres":"123 main st",
+ "contact_number":"897654321",
+ "size":"meduim",
+ "weight":"3"
+}
+
+//RESPONSE
+{
+ "tracking_id":"9a6b48cb-e92e-458c-a2c3-0d0d1797339a"
+ "customer_name":"john doe",
+ "delivery_addres":"123 main st",
+ "contact_number":"897654321",
+ "size":"meduim",
+ "weight":"3"
+}
