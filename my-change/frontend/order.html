@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delivery Orders</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>Delivery Orders</h2>
+  <form id="orderForm">
+    <input name="parcel_id" placeholder="Parcel ID" required />
+    <select name="status">
+      <option value="pending">Pending</option>
+      <option value="dispatched">Dispatched</option>
+      <option value="delivered">Delivered</option>
+    </select>
+    <button type="submit">Create Order</button>
+  </form>
+
+  <table id="orderTable">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Parcel ID</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="app.js"></script>
+</body>
+</html>
