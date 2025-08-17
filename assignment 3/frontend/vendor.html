@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Vendor Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Vendor Dashboard</h2>
+    <button id="logout" class="btn small">Logout</button>
+
+    <section>
+      <h3>Create Parcel (your vendor)</h3>
+      <form id="vendorParcelForm">
+        <input name="customer_name" placeholder="Customer name" required />
+        <input name="delivery_address" placeholder="Delivery address" required />
+        <input name="pincode" placeholder="Pincode" />
+        <input name="contact_number" placeholder="Contact number" required />
+        <input name="size" placeholder="Size" />
+        <input name="weight" placeholder="Weight" />
+        <button class="btn" type="submit">Create Parcel</button>
+      </form>
+    </section>
+
+    <section>
+      <h3>Your Parcels</h3>
+      <table id="vendorParcels" class="data-table">
+        <thead><tr><th>Tracking</th><th>Customer</th><th>Address</th><th>Pincode</th><th>Contact</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Upload Delivery Order File</h3>
+      <form id="uploadForm">
+        <input type="date" name="order_date" />
+        <select name="subscription_type">
+          <option value="NORMAL">NORMAL</option>
+          <option value="PRIME">PRIME</option>
+          <option value="VIP">VIP</option>
+        </select>
+        <input name="total_orders" type="number" placeholder="Total orders" />
+        <input type="file" name="file" accept=".csv,.json" />
+        <button class="btn" type="submit">Upload</button>
+      </form>
+    </section>
+
+    <section>
+      <h3>Your Delivery Orders</h3>
+      <table id="vendorOrders" class="data-table">
+        <thead><tr><th>ID</th><th>Date</th><th>Type</th><th>Total</th><th>File</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <p><a href="index.html">Home</a></p>
+  </div>
+<!--
+/*
+  Vendor Dashboard for Tech Eazy Delivery
+  Allows vendors to create parcels, upload delivery orders, and view their own parcels and orders.
+  but not able to view other vendor's parcels or orders.
+
+<script src="app.js"></script>
+<script>
+const token = localStorage.getItem('token');
+const vendorId = localStorage.getItem('vendorId');
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('logout').addEventListener('click', ()=>{
+  localStorage.clear(); window.location.href='index.html';
+});
+
+// Create parcel
+document.getElementById('vendorParcelForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+  try {
+    const res = await fetch('http://localhost:3000/parcels', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Create failed');
+    e.target.reset();
+    loadVendorParcels();
+  } catch (err) { alert(err.message); }
+});
+
+// List vendor parcels
+async function loadVendorParcels(){
+  try {
+    const res = await fetch('http://localhost:3000/parcels', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const parcels = await (res.ok ? res.json() : []);
+    const t = document.querySelector('#vendorParcels tbody');
+    t.innerHTML = parcels.map(p => `
+      <tr>
+        <td>${p.tracking_id}</td>
+        <td>${p.customer_name}</td>
+        <td>${p.delivery_address}</td>
+        <td>${p.pincode || ''}</td>
+        <td>${p.contact_number}</td>
+      </tr>
+    `).join('');
+  } catch (err) { console.error(err); }
+}
+
+// Upload delivery order file
+document.getElementById('uploadForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const form = e.target;
+  const fd = new FormData(form);
+  try {
+    const res = await fetch('http://localhost:3000/delivery-orders/upload', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: fd
+    });
+    if (!res.ok) {
+      const js = await res.json().catch(()=>({error:res.statusText}));
+      throw new Error(js.error || 'Upload failed');
+    }
+    form.reset();
+    loadVendorOrders();
+  } catch (err) { alert(err.message); }
+});
+
+// List vendor orders
+async function loadVendorOrders(){
+  try {
+    const res = await fetch('http://localhost:3000/delivery-orders', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const orders = await (res.ok ? res.json() : []);
+    const t = document.querySelector('#vendorOrders tbody');
+    t.innerHTML = orders.map(o => `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.order_date}</td>
+        <td>${o.subscription_type}</td>
+        <td>${o.total_orders}</td>
+        <td>${o.file_link ? <a href="${o.file_link}" target="_blank">file</a> : ''}</td>
+      </tr>
+    `).join('');
+  } catch (err) { console.error(err); }
+}
+
+loadVendorParcels();
+loadVendorOrders();
+</script>
+-->
+<script src="app.js"></script>
+<script>
+const token = localStorage.getItem('token');
+const vendorId = localStorage.getItem('vendorId');
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('logout').addEventListener('click', ()=>{
+  localStorage.clear(); window.location.href='index.html';
+});
+
+// Create parcel
+document.getElementById('vendorParcelForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+  try {
+    const res = await fetch('http://localhost:3000/parcels', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer ' + token 
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Create failed');
+    }
+
+    const createdParcel = await res.json();
+    alert(`✅ Parcel created successfully!\nTracking ID: ${createdParcel.tracking_id}`);
+
+    e.target.reset();
+    loadVendorParcels();
+  } catch (err) {
+    alert('❌ ' + err.message);
+  }
+});
+
+// List vendor parcels
+async function loadVendorParcels(){
+  try {
+    const res = await fetch('http://localhost:3000/parcels', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Failed to load parcels');
+    }
+
+    const parcels = await res.json();
+    const t = document.querySelector('#vendorParcels tbody');
+    t.innerHTML = parcels.map(p => `
+      <tr>
+        <td>${p.tracking_id}</td>
+        <td>${p.customer_name}</td>
+        <td>${p.delivery_address}</td>
+        <td>${p.pincode || ''}</td>
+        <td>${p.contact_number}</td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    console.error(err);
+    alert('❌ ' + err.message);
+  }
+}
+
+// Upload delivery order file
+document.getElementById('uploadForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const form = e.target;
+  const fd = new FormData(form);
+  try {
+    const res = await fetch('http://localhost:3000/delivery-orders/upload', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: fd
+    });
+
+    if (!res.ok) {
+      const js = await res.json().catch(()=>({error:res.statusText}));
+      throw new Error(js.error || 'Upload failed');
+    }
+
+    form.reset();
+    loadVendorOrders();
+  } catch (err) { 
+    alert('❌ ' + err.message); 
+  }
+});
+
+// List vendor orders
+async function loadVendorOrders(){
+  try {
+    const res = await fetch('http://localhost:3000/delivery-orders', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || 'Failed to load orders');
+    }
+
+    const orders = await res.json();
+    const t = document.querySelector('#vendorOrders tbody');
+    t.innerHTML = orders.map(o => `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.order_date}</td>
+        <td>${o.subscription_type}</td>
+        <td>${o.total_orders}</td>
+        <td>${o.file_link ? <a href="${o.file_link}" target="_blank">file</a> : ''}</td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    console.error(err);
+    alert('❌ ' + err.message);
+  }
+}
+
+loadVendorParcels();
+loadVendorOrders();
+</script>
+</body>
+</html>
