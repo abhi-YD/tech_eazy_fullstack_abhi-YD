@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Dashboard</h2>
+    <button id="logout" class="btn small">Logout</button>
+
+    <section>
+      <h3>All Parcels</h3>
+      <table id="adminParcels" class="data-table">
+        <thead><tr><th>Tracking</th><th>Vendor</th><th>Customer</th><th>Address</th><th>Pincode</th><th>Contact</th><th>Created</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Vendors</h3>
+      <table id="adminVendors" class="data-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Created</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Delivery Orders (All)</h3>
+      <table id="adminOrders" class="data-table">
+        <thead><tr><th>ID</th><th>Vendor</th><th>Date</th><th>Subscr.</th><th>Total</th><th>File</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <p><a href="index.html">Home</a></p>
+  </div>
+
+<script src="app.js"></script>
+<script>
+const token = localStorage.getItem('token');
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('logout').addEventListener('click', ()=>{
+  localStorage.clear(); window.location.href='index.html';
+});
+
+async function loadAdminData() {
+  try {
+    const headers = { 'Authorization': 'Bearer ' + token };
+
+    // Parcels
+    let res = await fetch('http://localhost:3000/parcels', { headers });
+    const parcels = await (res.ok ? res.json() : []);
+    const pbody = document.querySelector('#adminParcels tbody');
+    pbody.innerHTML = parcels.map(p => `
+      <tr>
+        <td>${p.tracking_id}</td>
+        <td>${p.vendor_id || ''}</td>
+        <td>${p.customer_name}</td>
+        <td>${p.delivery_address}</td>
+        <td>${p.pincode||''}</td>
+        <td>${p.contact_number}</td>
+        <td>${p.created_at||''}</td>
+      </tr>
+    `).join('');
+
+    // Vendors
+    res = await fetch('http://localhost:3000/vendors', { headers });
+    const vendors = await (res.ok ? res.json() : []);
+    const vbody = document.querySelector('#adminVendors tbody');
+    vbody.innerHTML = vendors.map(v => `
+      <tr>
+        <td>${v.id}</td>
+        <td>${v.name}</td>
+        <td>${v.email}</td>
+        <td>${v.role}</td>
+        <td>${v.created_at||''}</td>
+      </tr>
+    `).join('');
+
+    // Orders
+    res = await fetch('http://localhost:3000/delivery-orders', { headers });
+    const orders = await (res.ok ? res.json() : []);
+    const obody = document.querySelector('#adminOrders tbody');
+    obody.innerHTML = orders.map(o => `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.vendor_id}</td>
+        <td>${o.order_date}</td>
+        <td>${o.subscription_type}</td>
+        <td>${o.total_orders}</td>
+        <td>${o.file_link ? <a href="${o.file_link}" target="_blank">file</a> : ''}</td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    console.error(err);
+    alert('Error loading data: ' + err.message);
+  }
+}
+
+loadAdminData();
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Login — Tech Eazy</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Vendor / Admin Login</h2>
+
+    <form id="loginForm">
+      <input name="email" type="email" placeholder="Email" required />
+      <input name="password" type="password" placeholder="Password" required />
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <p id="msg" class="muted"></p>
+    <p><a href="index.html">Back</a></p>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // login page logic
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      document.getElementById('msg').textContent = 'Logging in...';
+
+      try {
+        const res = await fetch('http://localhost:3000/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(()=>({error:res.statusText}));
+          throw new Error(err.error || 'Login failed');
+        }
+        const js = await res.json();
+        // server returns { token, vendor }
+        localStorage.setItem('token', js.token);
+        localStorage.setItem('role', js.vendor.role || js.vendor.role);
+        localStorage.setItem('vendorId', js.vendor.id || js.vendor.id);
+
+        // redirect based on role
+        if (js.vendor.role === 'Admin') window.location.href = 'admin.html';
+        else window.location.href = 'vendor.html';
+      } catch (err) {
+        document.getElementById('msg').textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

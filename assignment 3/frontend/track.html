@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Track Parcel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Track Parcel (Public)</h2>
+    <form id="trackForm">
+      <input id="trackingId" placeholder="Enter tracking ID" required />
+      <button class="btn" type="submit">Track</button>
+    </form>
+
+    <div id="result"></div>
+    <p><a href="index.html">Home</a></p>
+  </div>
+
+<script>
+document.getElementById('trackForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const id = document.getElementById('trackingId').value.trim();
+  const resultEl = document.getElementById('result');
+  resultEl.innerHTML = 'Loading...';
+  try {
+    const res = await fetch(`http://localhost:3000/parcels/track/${encodeURIComponent(id)}`);
+    if (!res.ok) {
+      resultEl.textContent = 'Parcel not found or error';
+      return;
+    }
+    const p = await res.json();
+    resultEl.innerHTML = `
+      <h3>Parcel Details</h3>
+      <table class="info">
+        <tr><th>Tracking ID</th><td>${p.tracking_id}</td></tr>
+        <tr><th>Customer</th><td>${p.customer_name}</td></tr>
+        <tr><th>Address</th><td>${p.delivery_address}</td></tr>
+        <tr><th>Pincode</th><td>${p.pincode || ''}</td></tr>
+        <tr><th>Contact</th><td>${p.contact_number}</td></tr>
+        <tr><th>Size / Weight</th><td>${p.size} / ${p.weight}</td></tr>
+      </table>
+    `;
+  } catch (err) {
+    resultEl.textContent = 'Error: ' + err.message;
+  }
+});
+</script>
+</body>
+</html>
